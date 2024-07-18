@@ -1,0 +1,30 @@
+body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.singleSetting{
+    width: 15rem;
+    overflow: hidden;
+    padding:1rem;
+    margin: 1rem;
+    border: black 1px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#settings{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#card_canvas{
+    border:10px dashed green;
+
+}
+input[type='file'] {
+    width: 12rem; /* Adjust the width as needed */
+    overflow: hidden;
+    white-space: nowrap;
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcane Flow Card Creator</title>
+    <link rel="stylesheet" href="card_creator.css">
+</head>
+<body>
+    <div id="settings">
+        <div id="name" class="singleSetting">
+            <h1>Name</h1>
+            <input type="text" id="nameInput">
+        </div>
+        <div id="image" class="singleSetting">
+            <h1>Image</h1>
+            <input type="file" name="card image" id="imageInput">
+        </div>
+        <div id="flowType" class="singleSetting">
+            <h1>Flow Type</h1>
+            <select name="flowType" id="flowTypeInput">
+                <option value="power">power</option>
+                <option value="shield">shield</option>
+                <option value="effect">effect</option>
+                <option value="ascended">ascended</option>
+            </select>
+        </div>
+        <div id="flowLevel" class="singleSetting">
+            <h1>Flow level</h1>
+            <input type="number" name="flowLevel" id="flowLevelInput">
+        </div>
+        <div id="strength" class="singleSetting">
+            <h1>Flow strength</h1>
+            <input type="number" name="flowStrength" id="flowStrengthInput">
+        </div>
+        <div id="shield" class="singleSetting">
+            <h1>Flow shield</h1>
+            <input type="number" name="flowShield" id="flowShieldInput">
+        </div>
+        <div id="archetype" class="singleSetting">
+            <h1>Flow archeType</h1>
+            <select name="flowArcheType" id="flowArcheTypeInput">
+                <option value="temporal wizard">temporal wizard</option>
+                <option value="void rejected">void rejected</option>
+                <option value="the enlightened ones">the enlightened ones</option>
+                <option value="lost entities">lost entities</option>
+            </select>
+        </div>
+        <div id="descriptionSize" class="singleSetting">
+            <h1>Description font size</h1>
+            <input type="number" name="descriptionSize" id="descriptionPxInput">
+        </div>
+        <div id="description" class="singleSetting">
+            <h1>Description</h1>
+            <textarea name="description" id="descriptionInput"></textarea>
+        </div>
+    </div>
+    
+    <div id="canvas">
+        <canvas width="750" height="1000" id="card_canvas"></canvas>
+    </div>
+
+    <script src="card_creator.js"></script>
+</body>
+</html>
