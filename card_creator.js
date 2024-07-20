@@ -9,18 +9,23 @@ let shardLevel= 4;
 let colorTemplate= 'green';
 let cardName= 'Dayspell wizard';
 let descriptionPxSize= 20;
+let cardBorderColor= 'rgba(46, 49, 94, 0.5)';
+let cardMainFillColor= 'rgba(46, 49, 94, 1)';
+let essenceFillColor= 'rgb(0,255,0)';
+let essenceType= "cyclespell";
 let customImage,customDescriptionFrame,customStatsFrame,customShardImage, customType;
 
 //loading input
 const nameInput= document.getElementById('nameInput');
 const imageInput= document.getElementById('imageInput');
-const flowTypeInput= document.getElementById('flowTypeInput');
+const flowAffinityInput= document.getElementById('flowAffinityInput');
 const flowLevelInput= document.getElementById('flowLevelInput');
 const flowStrengthInput= document.getElementById('flowStrengthInput');
 const flowShieldInput= document.getElementById('flowShieldInput');
-const flowArcheType= document.getElementById('flowArcheTypeInput');
+const flowEssenceType= document.getElementById('flowEssenceInput');
 const descriptionPxInput= document.getElementById('descriptionPxInput');
 const descriptionInput= document.getElementById('descriptionInput');
+const cardTypeInput= document.getElementById('cardTypeInput');
 
 
 
@@ -56,12 +61,36 @@ function drawStats(ctx){
   //half space is 375 each
 
   const strengthTextLength=ctx.measureText(flowStrengthToText)
-  console
   ctx.fillText(flowStrengthToText,375/2-strengthTextLength.width/2,950); //avaible space from 190 till 750
   
   ctx.fillStyle= 'cyan'; 
   const shieldTextLength=ctx.measureText(flowShieldToText)
   ctx.fillText(flowShieldToText,750/2+shieldTextLength.width/2,950); //avaible space from 190 till 750
+}
+
+function essenceRendering(ctx){
+  ctx.font = "30px Orbitron";
+  ctx.fillStyle =cardMainFillColor;
+  const textWidth= ctx.measureText(essenceType).width;
+  const cardWidth=750;
+  ctx.beginPath();
+  ctx.roundRect(cardWidth-50-textWidth, 20, textWidth+30, 50, 5); //end at 190  h=160-50
+  ctx.fill();
+
+  ctx.fillStyle= essenceFillColor;
+  ctx.textBaseline = 'middle';
+  
+  ctx.fillText(essenceType,cardWidth-40-textWidth,45);
+  ctx.textBaseline ='alphabetic';
+  
+}
+function nameCardRendering(ctx){
+      //card name text drawing
+      ctx.font = "50px Orbitron";
+      ctx.lineWidth = 3;
+      ctx.strokeText(cardName,200,120) //name border
+  
+      ctx.fillText(cardName,200,120); //avaible space from 190 till 750
 }
 
 function createCard(){
@@ -76,43 +105,44 @@ function createCard(){
     const corniceStatsImage= new Image();
 
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    let defaultColor= 'rgba(46, 49, 94, 0.5)';
     
-    // Draw a red rectangle
-    ctx.strokeStyle =  defaultColor;
-    ctx.fillStyle = 'rgba(46, 49, 94,  1)';;
+    // Draw the card border rectangle
+    ctx.strokeStyle =  cardBorderColor;
+    ctx.fillStyle = cardMainFillColor;;
     ctx.lineWidth = 50; // Border thickness
-
-    // Draw the border
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
     
-    //draw top-left rectangle with the flow level
+    //background flow level drawing
     ctx.beginPath();
-    ctx.roundRect(-10, -10, 200, 200, 20); //end at 190 
+    flowLevelBackgroundH=110;
+    const flowBackgroundDistanceTop=50;
+    ctx.roundRect(-10, flowBackgroundDistanceTop, 200, flowLevelBackgroundH, 20); //end at 190  h=160-50
     ctx.fill();
+    const hBackgroundCenter=flowBackgroundDistanceTop+flowLevelBackgroundH/2;
 
-    //draw shard level and the card name
+    //gener text border color
+    ctx.strokeStyle= "rgba(255, 255, 255, 1)";
 
-    ctx.font = "78px Orbitron";
-    ctx.fillStyle= `${colorTemplate}`; 
-    ctx.fillText(shardLevel,110,155);
-    
-    ctx.font = "50px Orbitron";
-    ctx.lineWidth = 5;
-    ctx.strokeStyle= "rgba(255, 255, 255, 0.8)";
-    ctx.strokeText(cardName,200,120)
-
-    ctx.fillText(cardName,200,120); //avaible space from 190 till 750
-    //ctx.fillText(cardName,200,120); //avaible space from 190 till 750
-    
+    //shard level
+    ctx.font = "65px Orbitron";
+    ctx.lineWidth = 2;
+    ctx.fillStyle= `${colorTemplate}`;
+    ctx.strokeText(shardLevel,110,hBackgroundCenter+25)//shard border 
+    ctx.fillText(shardLevel,110,hBackgroundCenter+25); 
 
     //draw shardImage
     shardImage.onload=()=>{
-        //ctx.filter = 'hue-rotate(180deg)';
-        ctx.drawImage(shardImage, 30, 20, shardImage.naturalWidth/8, shardImage.naturalHeight/8);
-        ctx.filter = 'none';
+      const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
+      ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
+      ctx.filter = 'none';
     }
+
+    //render card name
+    nameCardRendering(ctx);
+
+    //archetype rendering
+    essenceRendering(ctx)
+
 
     descBackdropImage.onload=()=>{
         //ctx.globalCompositeOperation = 'screen';
@@ -171,38 +201,68 @@ imageInput.onchange= e=>{
   }
 }
 
-flowTypeInput.onchange= e=>{
+flowAffinityInput.onchange= e=>{
   const selected= e.target.value;
   switch (selected){
     case 'power':
       colorTemplate="orange";
+      essenceFillColor="orange";
       customDescriptionFrame="./description_frames/cornice_card_orange.png";
       customShardImage="./shards/orange_shard.png";
       customStatsFrame="./stats_frames/card_stats_orange.png";
       createCard()
       break;
     case 'shield':
-      colorTemplate="cyan"
+      //colorTemplate="cyan";
+      colorTemplate="rgb(15, 189, 189)";
+      essenceFillColor="cyan";
       customDescriptionFrame="./description_frames/cornice_card_cyan.png";
       customShardImage="./shards/cyan_shard.png";
       customStatsFrame="./stats_frames/card_stats_cyan.png";
       createCard()
       break;
     case 'effect':
-      colorTemplate="green"
+      colorTemplate="green";
+      essenceFillColor="rgb(0,255,0)";
       customDescriptionFrame="./description_frames/cornice_card_green.png";
       customShardImage="./shards/green_shard.png";
       customStatsFrame="./stats_frames/card_stats_green.png";
       createCard()
       break;
     case 'ascended':
-      colorTemplate="purple"
+      colorTemplate="purple";
+      essenceFillColor="purple";
       customDescriptionFrame="./description_frames/cornice_card_ascended.png";
       customShardImage="./shards/ascended_shard.png";
       customStatsFrame="./stats_frames/card_stats_ascended.png";
       createCard()
       break;
   }
+}
+cardTypeInput.onchange= e=>{
+  const selected= e.target.value;
+  switch (selected){
+    case 'creature':
+      cardBorderColor= 'rgba(46, 49, 94, 0.5)';
+      cardMainFillColor= 'rgba(46, 49, 94, 1)';
+      createCard()
+      break;
+    case 'flow':
+      cardBorderColor= 'rgba(0, 255, 255, 0.2)';
+      cardMainFillColor= 'rgba(0, 155, 155, 1)';
+      createCard()
+      break;
+    case 'array':
+      cardBorderColor= 'rgba(255, 165, 0,0.3)';
+      cardMainFillColor= 'rgba(255, 222, 102, 1)';
+      createCard()
+      break;
+  }
+}
+
+flowEssenceType.onchange=e=>{
+  essenceType= e.target.value;
+  createCard();
 }
 
 flowLevelInput.oninput= e=>{
