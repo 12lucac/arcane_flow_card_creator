@@ -84,14 +84,80 @@ function essenceRendering(ctx){
   ctx.textBaseline ='alphabetic';
   
 }
-function nameCardRendering(ctx){
+//old
+/*function nameCardRendering(ctx){
       //card name text drawing
       ctx.font = "50px Orbitron";
       ctx.lineWidth = 3;
       ctx.strokeText(cardName,200,120) //name border
   
       ctx.fillText(cardName,200,120); //avaible space from 190 till 750
+}*/
+
+function nameCardRendering(ctx){
+  //card name text drawing
+  ctx.fillStyle= `${colorTemplate}`;
+  ctx.font = "50px Orbitron";
+  ctx.lineWidth = 3;
+  ctx.textBaseline='middle';
+  ctx.textAlign='center';
+  ctx.strokeText(cardName,375,120) //name border
+
+  ctx.fillText(cardName,375,120); //avaible space from 190 till 750
+  ctx.textBaseline='alphabetic';
+  ctx.textAlign='start';
 }
+
+//first version
+/*function shardLevelRender(ctx,shardImage){
+  //background flow level background
+  ctx.beginPath();
+  flowLevelBackgroundH=110;
+  const flowBackgroundDistanceTop=50;
+  ctx.roundRect(-10, flowBackgroundDistanceTop, 200, flowLevelBackgroundH, 20); //end at 190  h=160-50
+  ctx.fill();
+  const hBackgroundCenter=flowBackgroundDistanceTop+flowLevelBackgroundH/2;
+
+  //shard level
+  ctx.font = "65px Orbitron";
+  ctx.lineWidth = 2;
+  ctx.fillStyle= `${colorTemplate}`;
+  ctx.strokeText(shardLevel,110,hBackgroundCenter+25)//shard border 
+  ctx.fillText(shardLevel,110,hBackgroundCenter+25); 
+
+  //draw shardImage
+  shardImage.onload=()=>{
+    const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
+    ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
+    ctx.filter = 'none';
+  }
+}*/
+
+function shardLevelRender(ctx,shardImage){
+  //background flow level background
+  ctx.beginPath();
+  flowLevelBackgroundH=90;
+  const flowBackgroundDistanceTop=525-45;
+  ctx.fillStyle = cardMainFillColor;;
+  ctx.roundRect(-10, flowBackgroundDistanceTop, 200, flowLevelBackgroundH, 20); //end at 190  h=160-50
+  ctx.fill();
+  const hBackgroundCenter=flowBackgroundDistanceTop+flowLevelBackgroundH/2;
+
+  //shard level
+  ctx.font = "65px Orbitron";
+  ctx.lineWidth = 2;
+  ctx.fillStyle= `${colorTemplate}`;
+  ctx.strokeText(shardLevel,110,hBackgroundCenter+25)//shard border 
+  ctx.fillText(shardLevel,110,hBackgroundCenter+25); 
+
+  //draw shardImage
+  shardImage.onload=()=>{
+    const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
+    ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
+    ctx.filter = 'none';
+  }
+}
+
 
 function createCard(){
   const ctx = canvas.getContext("2d");
@@ -111,31 +177,12 @@ function createCard(){
     ctx.fillStyle = cardMainFillColor;;
     ctx.lineWidth = 50; // Border thickness
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
-    
-    //background flow level drawing
-    ctx.beginPath();
-    flowLevelBackgroundH=110;
-    const flowBackgroundDistanceTop=50;
-    ctx.roundRect(-10, flowBackgroundDistanceTop, 200, flowLevelBackgroundH, 20); //end at 190  h=160-50
-    ctx.fill();
-    const hBackgroundCenter=flowBackgroundDistanceTop+flowLevelBackgroundH/2;
 
     //gener text border color
     ctx.strokeStyle= "rgba(255, 255, 255, 1)";
+    
+    //render shardLevel
 
-    //shard level
-    ctx.font = "65px Orbitron";
-    ctx.lineWidth = 2;
-    ctx.fillStyle= `${colorTemplate}`;
-    ctx.strokeText(shardLevel,110,hBackgroundCenter+25)//shard border 
-    ctx.fillText(shardLevel,110,hBackgroundCenter+25); 
-
-    //draw shardImage
-    shardImage.onload=()=>{
-      const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
-      ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
-      ctx.filter = 'none';
-    }
 
     //render card name
     nameCardRendering(ctx);
@@ -163,12 +210,15 @@ function createCard(){
         xPos=750/2-corniceImage.naturalWidth/2
         yPos=600-corniceImage.naturalHeight/2
         ctx.drawImage(corniceImage, xPos , yPos, corniceImage.naturalWidth, corniceImage.naturalHeight)
-    }
+        shardLevelRender(ctx,shardImage)
+      }
     corniceStatsImage.onload=()=>{
         xPos=750/2-corniceStatsImage.naturalWidth/2
         yPos=1000-corniceStatsImage.naturalHeight
         ctx.drawImage(corniceStatsImage, xPos , yPos, corniceStatsImage.naturalWidth, corniceStatsImage.naturalHeight)
     }
+
+    
 
     //charging secondary element
     descBackdropImage.src='./description_background.png';
