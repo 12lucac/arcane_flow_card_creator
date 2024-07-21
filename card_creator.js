@@ -133,6 +133,7 @@ function nameCardRendering(ctx){
   }
 }*/
 
+//second iteration
 function shardLevelRender(ctx,shardImage){
   //background flow level background
   ctx.beginPath();
@@ -143,6 +144,17 @@ function shardLevelRender(ctx,shardImage){
   ctx.fill();
   const hBackgroundCenter=flowBackgroundDistanceTop+flowLevelBackgroundH/2;
 
+
+  //draw shardImage
+  shardImage.onload=()=>{
+    console.log('ciao');
+    const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
+    ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
+    ctx.filter = 'none';
+  }
+
+  shardImage.src= customShardImage?customShardImage: './shards/green_shard.png';
+
   //shard level
   ctx.font = "65px Orbitron";
   ctx.lineWidth = 2;
@@ -150,15 +162,8 @@ function shardLevelRender(ctx,shardImage){
   ctx.strokeText(shardLevel,110,hBackgroundCenter+25)//shard border 
   ctx.fillText(shardLevel,110,hBackgroundCenter+25); 
 
-  //draw shardImage
-  shardImage.onload=()=>{
-    const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
-    ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
-    ctx.filter = 'none';
-  }
+
 }
-
-
 function createCard(){
   const ctx = canvas.getContext("2d");
   const img = new Image();
@@ -223,7 +228,7 @@ function createCard(){
     //charging secondary element
     descBackdropImage.src='./description_background.png';
     corniceStatsImage.src= customStatsFrame?customStatsFrame:'./stats_frames/card_stats_green.png';
-    shardImage.src= customShardImage?customShardImage: './shards/green_shard.png';
+
     corniceImage.src= customDescriptionFrame? customDescriptionFrame: './description_frames/cornice_card_green.png';
 
   };
