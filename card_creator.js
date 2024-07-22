@@ -31,25 +31,34 @@ const cardTypeInput= document.getElementById('cardTypeInput');
 
 
 
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+function wrapText(ctx, text, x, y, maxWidth, lineHeight,fontsize) {
   let words = text.split(' ');
   let line = '';
 
   for(let n = 0; n < words.length; n++) {
-      let testLine = line + words[n] + ' ';
-      let metrics = ctx.measureText(testLine);
-      let testWidth = metrics.width;
-      
-      if (testWidth > maxWidth && line !== '') {
-          ctx.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += lineHeight;
-      } else {
-          line = testLine;
-      }
-  }
+    let testLine = line + words[n] + ' ';
+    
+    // Check if the word is /break/ to force a line break
+    if (words[n] === '/break/') {
+        ctx.fillText(line, x, y);
+        line = '';
+        y += fontsize*1.5;
+        continue;
+    }
+    
+    let metrics = ctx.measureText(testLine);
+    let testWidth = metrics.width;
+    
+    if (testWidth > maxWidth && line !== '') {
+        ctx.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += fontsize*1.5;
+    } else {
+        line = testLine;
+    }
+}
 
-  ctx.fillText(line, x, y);
+ctx.fillText(line, x, y);
 }
 
 function drawStats(ctx){
@@ -174,7 +183,7 @@ function createCard(){
         //draw text
         ctx.font =` ${descriptionPxSize}px Orbitron`;
         ctx.fillStyle= 'white'; 
-        wrapText(ctx,descriptionText,20,725,720,30)
+        wrapText(ctx,descriptionText,20,725,720,30,descriptionPxSize)
         
         corniceImage.onload=()=>{
           xPos=750/2-corniceImage.naturalWidth/2
