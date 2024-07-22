@@ -13,6 +13,7 @@ let cardBorderColor= 'rgba(46, 49, 94, 0.5)';
 let cardMainFillColor= 'rgba(46, 49, 94, 1)';
 let essenceFillColor= 'rgb(0,255,0)';
 let essenceType= "cyclespell";
+let drawStatsTrue= true;
 let customImage,customDescriptionFrame,customStatsFrame,customShardImage, customType,customDescBackdrop;
 
 //loading input
@@ -168,7 +169,7 @@ function createCard(){
         ctx.drawImage(descBackdropImage, 0 ,525, 750,475);
         //ctx.globalCompositeOperation = 'source-over';
 
-        drawStats(ctx)
+        if(drawStatsTrue)drawStats(ctx);
 
         //draw text
         ctx.font =` ${descriptionPxSize}px Orbitron`;
@@ -182,22 +183,20 @@ function createCard(){
           shardLevelRender(ctx,shardImage)
         }
 
+        corniceStatsImage.onload=()=>{
+          xPos=750/2-corniceStatsImage.naturalWidth/2
+          yPos=1000-corniceStatsImage.naturalHeight
+          ctx.drawImage(corniceStatsImage, xPos , yPos, corniceStatsImage.naturalWidth, corniceStatsImage.naturalHeight)
+        }
+    
+
         corniceImage.src= customDescriptionFrame? customDescriptionFrame: './description_frames/cornice_card_green.png';
+        corniceStatsImage.src= customStatsFrame?customStatsFrame:'./stats_frames/card_stats_green.png';
+
     }
     
-    corniceStatsImage.onload=()=>{
-      xPos=750/2-corniceStatsImage.naturalWidth/2
-      yPos=1000-corniceStatsImage.naturalHeight
-      ctx.drawImage(corniceStatsImage, xPos , yPos, corniceStatsImage.naturalWidth, corniceStatsImage.naturalHeight)
-    }
-
-    
-
     //charging secondary element
     descBackdropImage.src= customDescBackdrop?customDescBackdrop:'./description_background/description_background_creature.png';
-    corniceStatsImage.src= customStatsFrame?customStatsFrame:'./stats_frames/card_stats_green.png';
-
-
 
   };
   //charging image
@@ -269,20 +268,23 @@ cardTypeInput.onchange= e=>{
       cardBorderColor= 'rgba(46, 49, 94, 0.5)';
       cardMainFillColor= 'rgba(46, 49, 94, 1)';
       customDescBackdrop= "./description_background/description_background_creature.png"
-      createCard()
+      drawStatsTrue=true;
+      createCard();
       break;
     case 'flow':
       cardBorderColor= 'rgba(0, 255, 255, 0.2)';
       cardMainFillColor= 'rgba(0, 155, 155, 1)';
       customDescBackdrop= "./description_background/description_background_cyan.png"
-      createCard()
+      drawStatsTrue=false;
+      createCard();
       break;
     case 'array':
       cardBorderColor= 'rgba(255, 165, 0,0.3)';
       //cardMainFillColor= 'rgba(255, 222, 102, 1)';
       cardMainFillColor= '#ab533d';
       customDescBackdrop= "./description_background/description_background_orange.png"
-      createCard()
+      drawStatsTrue=false;
+      createCard();
       break;
   }
 }
