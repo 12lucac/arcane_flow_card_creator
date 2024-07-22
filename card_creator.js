@@ -13,7 +13,7 @@ let cardBorderColor= 'rgba(46, 49, 94, 0.5)';
 let cardMainFillColor= 'rgba(46, 49, 94, 1)';
 let essenceFillColor= 'rgb(0,255,0)';
 let essenceType= "cyclespell";
-let customImage,customDescriptionFrame,customStatsFrame,customShardImage, customType;
+let customImage,customDescriptionFrame,customStatsFrame,customShardImage, customType,customDescBackdrop;
 
 //loading input
 const nameInput= document.getElementById('nameInput');
@@ -84,15 +84,6 @@ function essenceRendering(ctx){
   ctx.textBaseline ='alphabetic';
   
 }
-//old
-/*function nameCardRendering(ctx){
-      //card name text drawing
-      ctx.font = "50px Orbitron";
-      ctx.lineWidth = 3;
-      ctx.strokeText(cardName,200,120) //name border
-  
-      ctx.fillText(cardName,200,120); //avaible space from 190 till 750
-}*/
 
 function nameCardRendering(ctx){
   //card name text drawing
@@ -108,30 +99,6 @@ function nameCardRendering(ctx){
   ctx.textAlign='start';
 }
 
-//first version
-/*function shardLevelRender(ctx,shardImage){
-  //background flow level background
-  ctx.beginPath();
-  flowLevelBackgroundH=110;
-  const flowBackgroundDistanceTop=50;
-  ctx.roundRect(-10, flowBackgroundDistanceTop, 200, flowLevelBackgroundH, 20); //end at 190  h=160-50
-  ctx.fill();
-  const hBackgroundCenter=flowBackgroundDistanceTop+flowLevelBackgroundH/2;
-
-  //shard level
-  ctx.font = "65px Orbitron";
-  ctx.lineWidth = 2;
-  ctx.fillStyle= `${colorTemplate}`;
-  ctx.strokeText(shardLevel,110,hBackgroundCenter+25)//shard border 
-  ctx.fillText(shardLevel,110,hBackgroundCenter+25); 
-
-  //draw shardImage
-  shardImage.onload=()=>{
-    const shardImageTop= hBackgroundCenter-shardImage.naturalHeight/22; //find the position of the hbackground center and remove halp of the heigth
-    ctx.drawImage(shardImage, 20, shardImageTop, shardImage.naturalWidth/11, shardImage.naturalHeight/11);
-    ctx.filter = 'none';
-  }
-}*/
 
 //second iteration
 function shardLevelRender(ctx,shardImage){
@@ -207,29 +174,30 @@ function createCard(){
         ctx.font =` ${descriptionPxSize}px Orbitron`;
         ctx.fillStyle= 'white'; 
         wrapText(ctx,descriptionText,20,725,720,30)
-
         
+        corniceImage.onload=()=>{
+          xPos=750/2-corniceImage.naturalWidth/2
+          yPos=600-corniceImage.naturalHeight/2
+          ctx.drawImage(corniceImage, xPos , yPos, corniceImage.naturalWidth, corniceImage.naturalHeight)
+          shardLevelRender(ctx,shardImage)
+        }
+
+        corniceImage.src= customDescriptionFrame? customDescriptionFrame: './description_frames/cornice_card_green.png';
     }
     
-    corniceImage.onload=()=>{
-        xPos=750/2-corniceImage.naturalWidth/2
-        yPos=600-corniceImage.naturalHeight/2
-        ctx.drawImage(corniceImage, xPos , yPos, corniceImage.naturalWidth, corniceImage.naturalHeight)
-        shardLevelRender(ctx,shardImage)
-      }
     corniceStatsImage.onload=()=>{
-        xPos=750/2-corniceStatsImage.naturalWidth/2
-        yPos=1000-corniceStatsImage.naturalHeight
-        ctx.drawImage(corniceStatsImage, xPos , yPos, corniceStatsImage.naturalWidth, corniceStatsImage.naturalHeight)
+      xPos=750/2-corniceStatsImage.naturalWidth/2
+      yPos=1000-corniceStatsImage.naturalHeight
+      ctx.drawImage(corniceStatsImage, xPos , yPos, corniceStatsImage.naturalWidth, corniceStatsImage.naturalHeight)
     }
 
     
 
     //charging secondary element
-    descBackdropImage.src='./description_background.png';
+    descBackdropImage.src= customDescBackdrop?customDescBackdrop:'./description_background/description_background_creature.png';
     corniceStatsImage.src= customStatsFrame?customStatsFrame:'./stats_frames/card_stats_green.png';
 
-    corniceImage.src= customDescriptionFrame? customDescriptionFrame: './description_frames/cornice_card_green.png';
+
 
   };
   //charging image
@@ -300,16 +268,19 @@ cardTypeInput.onchange= e=>{
     case 'creature':
       cardBorderColor= 'rgba(46, 49, 94, 0.5)';
       cardMainFillColor= 'rgba(46, 49, 94, 1)';
+      customDescBackdrop= "./description_background/description_background_creature.png"
       createCard()
       break;
     case 'flow':
       cardBorderColor= 'rgba(0, 255, 255, 0.2)';
       cardMainFillColor= 'rgba(0, 155, 155, 1)';
+      customDescBackdrop= "./description_background/description_background_cyan.png"
       createCard()
       break;
     case 'array':
       cardBorderColor= 'rgba(255, 165, 0,0.3)';
       cardMainFillColor= 'rgba(255, 222, 102, 1)';
+      customDescBackdrop= "./description_background/description_background_orange.png"
       createCard()
       break;
   }
