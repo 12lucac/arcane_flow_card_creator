@@ -279,7 +279,8 @@ cardTypeInput.onchange= e=>{
       break;
     case 'array':
       cardBorderColor= 'rgba(255, 165, 0,0.3)';
-      cardMainFillColor= 'rgba(255, 222, 102, 1)';
+      //cardMainFillColor= 'rgba(255, 222, 102, 1)';
+      cardMainFillColor= '#ab533d';
       customDescBackdrop= "./description_background/description_background_orange.png"
       createCard()
       break;
