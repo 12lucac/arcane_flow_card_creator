@@ -65,17 +65,20 @@ function drawStats(ctx){
   let flowStrengthToText=`${flowStrength} strength`;
   let flowShieldToText=`${flowShield}  shield`;
 
+  ctx.textAlign='center';
+
   ctx.font = "35px Orbitron";
   ctx.fillStyle= 'orange'; 
 
   //half space is 375 each
 
   const strengthTextLength=ctx.measureText(flowStrengthToText)
-  ctx.fillText(flowStrengthToText,375/2-strengthTextLength.width/2,950); //avaible space from 190 till 750
+  ctx.fillText(flowStrengthToText,750/4,955); //avaible space from 190 till 750
   
   ctx.fillStyle= 'cyan'; 
   const shieldTextLength=ctx.measureText(flowShieldToText)
-  ctx.fillText(flowShieldToText,750/2+shieldTextLength.width/2,950); //avaible space from 190 till 750
+  ctx.fillText(flowShieldToText,750-750/4,955); //avaible space from 190 till 750
+  ctx.textAlign='start';
 }
 
 function essenceRendering(ctx){
@@ -102,9 +105,9 @@ function nameCardRendering(ctx){
   ctx.lineWidth = 3;
   ctx.textBaseline='middle';
   ctx.textAlign='center';
-  ctx.strokeText(cardName,375,120) //name border
+  ctx.strokeText(cardName,375,120,700) //name border
 
-  ctx.fillText(cardName,375,120); //avaible space from 190 till 750
+  ctx.fillText(cardName,375,120,700); //avaible space from 190 till 750
   ctx.textBaseline='alphabetic';
   ctx.textAlign='start';
 }
